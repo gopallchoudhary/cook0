@@ -31,6 +31,13 @@ export const createProject = async (value: string) => {
         })
 
         // TODO: send project to inngest
+        await inngest.send({
+            name: 'code-agent/run',
+            data: {
+                value,
+                projectId: project.id
+            }
+        })
 
 
         return project
@@ -51,7 +58,7 @@ export const getProjects = async () => {
             error: 'Unauthorized'
         }
     }
-    
+
 
     try {
         const projects = await prisma.project.findMany({
@@ -90,7 +97,7 @@ export const getProjectById = async (id: string) => {
             }
         })
 
-        if(!project) {
+        if (!project) {
             return {
                 error: 'Project not found'
             }
